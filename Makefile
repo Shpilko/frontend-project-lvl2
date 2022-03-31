@@ -13,3 +13,8 @@ gendiff:
 link:
     npm link
 
+lint:
+    npx eslint .
+
+lint-fix:
+    npx eslint . --fixl
