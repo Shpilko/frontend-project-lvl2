@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/Shpilko/frontend-project-lvl2#readme",
   "dependencies": {
-    "commander": "^9.1.0"
+    "commander": "^9.1.0",
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "eslint": "^8.12.0",
