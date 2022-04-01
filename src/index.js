@@ -22,7 +22,7 @@ export default (filepath1, filepath2) => {
       return `  + ${key}: ${file2[key]}`;
     }
 
-    return result;
+    return null;
   });
 
   return `{\n${result}\n}`.split(',').join('\n');
