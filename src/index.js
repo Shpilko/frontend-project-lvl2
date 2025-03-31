@@ -1,30 +1,19 @@
-import parser from '../src/parser.js'
-import _ from 'lodash';
+import fs from 'fs';
+import path from 'path';
+import buildTree from './buildTree.js';
+import parse from './parser.js';
+import format from './stylish.js';
 
-export default (filepath1, filepath2) => {
-    const file1 = parser(filepath1);
-    const file2 = parser(filepath2);
+const getAbsolutePath = (filepath) => path.resolve(process.cwd(), filepath);
+const readFile = (filepath) => fs.readFileSync(getAbsolutePath(filepath), 'utf-8');
+const getFormat = (filename) => filename.split('.')[1];
 
-    const keys1 = Object.keys(file1);
-    const keys2 = Object.keys(file2);
-    const keys = _.sortBy([...new Set([...keys1, ...keys2])]);
-
-    const result = keys.map((key) => {
-        if (keys1.includes(key) && !keys2.includes(key)) {
-            return `  - ${key}: ${file1[key]}`;
-        }
-        if (keys1.includes(key) && keys2.includes(key) && file1[key] === file2[key]) {
-            return `    ${key}: ${file1[key]}`;
-        }
-        if (keys1.includes(key) && keys2.includes(key) && file1[key] !== file2[key]) {
-            return `  - ${key}: ${file1[key]}\n  + ${key}: ${file2[key]}`;
-        }
-        if (!keys1.includes(key) && keys2.includes(key)) {
-            return `  + ${key}: ${file2[key]}`;
-        }
-
-        return null;
-    });
-
-    return `{\n${result}\n}`.split(',').join('\n');
+const genDiff = (filepath1, filepath2, nameOfFormat = 'stylish') => {
+    const content1 = readFile(filepath1);
+    const content2 = readFile(filepath2);
+    const data1 = parse(content1, getFormat(filepath1));
+    const data2 = parse(content2, getFormat(filepath2));
+    const tree = buildTree(data1, data2);
+    return format(tree, nameOfFormat);
 };
+export default genDiff;
