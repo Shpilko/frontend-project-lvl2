@@ -7,6 +7,8 @@ const format = (tree, type) => {
             return stylish(tree);
         case 'plain':
             return plain(tree);
+        case 'json':
+            return JSON.stringify(tree);
         default:
             throw new Error(`format ${type} is not supported`);
     }
