@@ -12,6 +12,8 @@ const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf-8'
 const cases = [
   ['file1.json', 'file2.json', 'stylishResult.txt', 'stylish'],
   ['file1.yml', 'file2.yml', 'stylishResult.txt', 'stylish'],
+  ['file1.json', 'file2.json', 'plainResult.txt', 'plain'],
+  ['file1.yml', 'file2.yml', 'plainResult.txt', 'plain']
 ];
 
 test.each(cases)('Compare %s and %s', (fileName1, fileName2, resultFileName, format) => {
