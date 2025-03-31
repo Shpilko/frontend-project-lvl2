@@ -2,10 +2,18 @@ import fs from 'fs';
 import path from 'path';
 import buildTree from './buildTree.js';
 import parse from './parser.js';
-import format from './stylish.js';
+import format from './formatters/index.js';
 
-const getAbsolutePath = (filepath) => path.resolve(process.cwd(), filepath);
-const readFile = (filepath) => fs.readFileSync(getAbsolutePath(filepath), 'utf-8');
+const getAbsolutePath = (filepath) => {
+    const currentPath = path.resolve(process.cwd(), filepath);
+    const fixturesPath = path.resolve(process.cwd(), '__fixtures__', filepath);
+    return fs.existsSync(currentPath) ? currentPath : fixturesPath;
+};
+
+const readFile = (filepath) => {
+    const absolutePath = getAbsolutePath(filepath);
+    return fs.readFileSync(absolutePath, 'utf-8');
+};
 const getFormat = (filename) => filename.split('.')[1];
 
 const genDiff = (filepath1, filepath2, nameOfFormat = 'stylish') => {
